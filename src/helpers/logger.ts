@@ -6,3 +6,7 @@ export const logMessage = (langCode: string, message: string): void => {
 export const log = (message: string): void => {
   console.log(message);
 };
+
+export const logWarn = (message: string): void => {
+  console.warn(`${message}\n`);
+};

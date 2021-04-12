@@ -40,6 +40,11 @@ exports.commandModes = [
         type: Boolean,
     },
     {
+        name: 'todo',
+        description: 'Generate a handful of files ready to be translated.',
+        type: Boolean,
+    },
+    {
         name: 'help',
         description: 'See this helpful message.',
         type: Boolean,
@@ -85,6 +90,19 @@ exports.commandOptions = [
         description: 'Config file path (default: ".transl8r.yml")',
         type: String,
         defaultValue: '.transl8r.yml',
+    },
+    {
+        name: 'outputDir',
+        alias: 'o',
+        description: 'Directory for output artefacts, for commands that support them.\n' +
+            'Hint: use `\\{\\{group\\}\\}` for placeholder for group name.',
+        type: String,
+    },
+    {
+        name: 'group',
+        alias: 'g',
+        description: 'Identifying group for commands that rely on it.',
+        type: String,
     },
 ];
 //# sourceMappingURL=options.js.map
