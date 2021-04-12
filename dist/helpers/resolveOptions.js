@@ -8,6 +8,7 @@ const yaml_1 = tslib_1.__importDefault(require("yaml"));
 const config_1 = require("../config");
 const path_1 = tslib_1.__importDefault(require("path"));
 const logger_1 = require("./logger");
+const dateformat_1 = tslib_1.__importDefault(require("dateformat"));
 /**
  * Accepts command line options and YAML options, and then returns result.
  */
@@ -30,7 +31,9 @@ const resolveCommandOptions = (cmd) => {
         validation: {
             mismatchedPlaceholders: (_t = (_s = yml.validation) === null || _s === void 0 ? void 0 : _s.mismatchedPlaceholders) !== null && _t !== void 0 ? _t : [],
         },
-        outputDir: ((_v = (_u = cmd.outputDir) !== null && _u !== void 0 ? _u : yml.outputDir) !== null && _v !== void 0 ? _v : config_1.config.outputDir).replace(/{{group}}/, group),
+        outputDir: ((_v = (_u = cmd.outputDir) !== null && _u !== void 0 ? _u : yml.outputDir) !== null && _v !== void 0 ? _v : config_1.config.outputDir)
+            .replace(/{{group}}/, group)
+            .replace(/{{date}}/, dateformat_1.default(Date(), 'yyyy-mm-dd')),
     };
 };
 exports.resolveCommandOptions = resolveCommandOptions;

@@ -16,5 +16,5 @@ export const config = {
     other: ['base'],
   },
   path: './{{lang}}/{{namespace}}.json',
-  outputDir: './todo-{{group}}',
+  outputDir: '{{group}}-todo-{{date}}',
 };

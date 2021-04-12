@@ -5,6 +5,7 @@ import { config } from '../config';
 import { Options, CommandOptions, YamlOptions } from '../types';
 import path from 'path';
 import { logWarn } from './logger';
+import dateFormat from 'dateformat';
 
 /**
  * Accepts command line options and YAML options, and then returns result.
@@ -33,7 +34,9 @@ export const resolveCommandOptions = (cmd: CommandOptions): Options => {
     validation: {
       mismatchedPlaceholders: yml.validation?.mismatchedPlaceholders ?? [],
     },
-    outputDir: (cmd.outputDir ?? yml.outputDir ?? config.outputDir).replace(/{{group}}/, group),
+    outputDir: (cmd.outputDir ?? yml.outputDir ?? config.outputDir)
+      .replace(/{{group}}/, group)
+      .replace(/{{date}}/, dateFormat(Date(), 'yyyy-mm-dd')),
   };
 };
 

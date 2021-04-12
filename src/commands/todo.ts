@@ -1,28 +1,39 @@
 import { LangJson, Options } from '../types';
 import { createObjectCsvWriter } from 'csv-writer';
 import { loadJsonFiles } from '../helpers/file';
-import { log, logMessage } from '../helpers/logger';
+import { log, logError, logMessage } from '../helpers/logger';
 import fs from 'fs';
 import { zip } from '../helpers/zip';
 import { removeDir } from '../helpers/removeDir';
+import { sleep } from '../helpers/sleep';
 
-export const todo = (options: Options): void => {
+export const todo = async (options: Options): Promise<void> => {
   const baseJson = loadJsonFiles(options.path, options.baseLang, options.availableNamespaces);
   const namespaces = getNonGeneratedNamespaces(options);
   const outputDir = options.outputDir;
   const outputZip = `${options.outputDir}.zip`;
 
-  options.langs.forEach(lang => {
+  let filesAdded = 0;
+  let filesUnresolved = 0;
+
+  options.langs.forEach(async lang => {
+    filesUnresolved += 1;
     const langJson = loadJsonFiles(options.path, lang, namespaces);
+    const langGeneratedJson = loadJsonFiles(options.path, lang, [options.namespace]);
     const missingJson = getMissing(baseJson, langJson);
     const missingCount = Object.keys(missingJson).length;
 
     if (missingCount === 0) {
-      logMessage(lang, 'No keys awaiting translation.');
       return;
     }
 
-    const filePath = `${outputDir}/${options.group}.${lang}.csv`;
+    const fileName = `${options.group}.${lang}.csv`;
+    const filePath = `${outputDir}/${fileName}`;
+    const csvHeader = {
+      contextKey: 'contextKey',
+      [options.baseLang]: options.baseLang,
+      [lang]: lang,
+    };
 
     fs.mkdirSync(outputDir, { recursive: true });
     const csvWriter = createObjectCsvWriter({
@@ -33,18 +44,31 @@ export const todo = (options: Options): void => {
     const records = Object.entries(missingJson).map(([key, value]) => ({
       contextKey: key,
       [options.baseLang]: value,
-      [lang]: '',
+      [lang]: langGeneratedJson[key] ?? '',
     }));
 
-    csvWriter.writeRecords(records).then(() => {
-      logMessage(lang, `...extracted ${missingCount} keys: ${filePath}`);
-    });
+    await csvWriter
+      .writeRecords([csvHeader, ...records])
+      .then(() => {
+        filesAdded += 1;
+        logMessage(lang, `Extracted ${missingCount} keys (${fileName})`);
+      })
+      .catch(error => logError(lang, `Failed to generated CSV. ${error}`))
+      .finally(() => {
+        filesUnresolved -= 1;
+      });
   });
 
-  zip(outputDir, outputZip).then(() => {
-    log(`Saved ${outputZip}`);
-    removeDir(outputDir);
-  });
+  while (filesUnresolved > 0) await sleep(100);
+
+  if (filesAdded === 0) {
+    log('Everything up to date ✓');
+  } else {
+    zip(outputDir, outputZip).then(() => {
+      log(`Saved ${outputZip}`);
+      removeDir(outputDir);
+    });
+  }
 };
 
 // Assumes "target" namespace is the generated namespace.

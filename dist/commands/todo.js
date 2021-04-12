@@ -8,39 +8,66 @@ const logger_1 = require("../helpers/logger");
 const fs_1 = tslib_1.__importDefault(require("fs"));
 const zip_1 = require("../helpers/zip");
 const removeDir_1 = require("../helpers/removeDir");
-const todo = (options) => {
+const sleep_1 = require("../helpers/sleep");
+const todo = (options) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     const baseJson = file_1.loadJsonFiles(options.path, options.baseLang, options.availableNamespaces);
     const namespaces = getNonGeneratedNamespaces(options);
     const outputDir = options.outputDir;
     const outputZip = `${options.outputDir}.zip`;
-    options.langs.forEach(lang => {
+    let filesAdded = 0;
+    let filesUnresolved = 0;
+    options.langs.forEach((lang) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+        filesUnresolved += 1;
         const langJson = file_1.loadJsonFiles(options.path, lang, namespaces);
+        const langGeneratedJson = file_1.loadJsonFiles(options.path, lang, [options.namespace]);
         const missingJson = getMissing(baseJson, langJson);
         const missingCount = Object.keys(missingJson).length;
         if (missingCount === 0) {
-            logger_1.logMessage(lang, 'No keys awaiting translation.');
             return;
         }
-        const filePath = `${outputDir}/${options.group}.${lang}.csv`;
+        const fileName = `${options.group}.${lang}.csv`;
+        const filePath = `${outputDir}/${fileName}`;
+        const csvHeader = {
+            contextKey: 'contextKey',
+            [options.baseLang]: options.baseLang,
+            [lang]: lang,
+        };
         fs_1.default.mkdirSync(outputDir, { recursive: true });
         const csvWriter = csv_writer_1.createObjectCsvWriter({
             path: filePath,
             header: ['contextKey', options.baseLang, lang],
         });
-        const records = Object.entries(missingJson).map(([key, value]) => ({
-            contextKey: key,
-            [options.baseLang]: value,
-            [lang]: '',
-        }));
-        csvWriter.writeRecords(records).then(() => {
-            logger_1.logMessage(lang, `...extracted ${missingCount} keys: ${filePath}`);
+        const records = Object.entries(missingJson).map(([key, value]) => {
+            var _a;
+            return ({
+                contextKey: key,
+                [options.baseLang]: value,
+                [lang]: (_a = langGeneratedJson[key]) !== null && _a !== void 0 ? _a : '',
+            });
         });
-    });
-    zip_1.zip(outputDir, outputZip).then(() => {
-        logger_1.log(`Saved ${outputZip}`);
-        removeDir_1.removeDir(outputDir);
-    });
-};
+        yield csvWriter
+            .writeRecords([csvHeader, ...records])
+            .then(() => {
+            filesAdded += 1;
+            logger_1.logMessage(lang, `Extracted ${missingCount} keys (${fileName})`);
+        })
+            .catch(error => logger_1.logError(lang, `Failed to generated CSV. ${error}`))
+            .finally(() => {
+            filesUnresolved -= 1;
+        });
+    }));
+    while (filesUnresolved > 0)
+        yield sleep_1.sleep(100);
+    if (filesAdded === 0) {
+        logger_1.log('Everything up to date ✓');
+    }
+    else {
+        zip_1.zip(outputDir, outputZip).then(() => {
+            logger_1.log(`Saved ${outputZip}`);
+            removeDir_1.removeDir(outputDir);
+        });
+    }
+});
 exports.todo = todo;
 // Assumes "target" namespace is the generated namespace.
 const getNonGeneratedNamespaces = (options) => {

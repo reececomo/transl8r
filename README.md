@@ -9,7 +9,8 @@ A simple utility for managing JSON language files in projects.
 - [x] Perform basic sanity checking.
 - [x] Sort translation files.
 - [x] Validate translation files.
-- [ ] Import/export language CSV files.
+- [x] Export TODO language translations as CSV.
+- [ ] Import language CSV files.
 
 ## Install
 

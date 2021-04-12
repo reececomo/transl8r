@@ -1,4 +1,4 @@
-group: example
+group: my-project
 languages:
   base: en
   other: ['fr', 'de']
