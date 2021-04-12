@@ -1,11 +1,11 @@
-group: example
+group: my-project
 languages:
   base: en
   other: ['fr', 'de']
 namespaces:
   target: base.generated
   other: ['legal', 'base']
-path: '/resources/lang/{{lang}}/{{namespace}}.json'
+path: 'tests/todo/{{lang}}/{{namespace}}.json'
 validation:
   mismatchedPlaceholders:
     - error.validation.required

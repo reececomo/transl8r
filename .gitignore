@@ -119,4 +119,6 @@ out
 
 # transl8r
 .transl8r.yml
-example/
+demo/*
+!demo/en
+*.csv

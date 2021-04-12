@@ -1,0 +1,8 @@
+{
+  "example.key1": "Hello, there.",
+  "example.key2": "Greetings, how are you?",
+  "example.key3": "Click this <0>link</0>",
+  "example.key4": "Would you like some :type?",
+  "example.key5": "No thanks, I have plenty of {{type}}.",
+  "example.key6": "Hi, {{user}}, please click <0>here to remove {{otherUser}}</0> from your group."
+}

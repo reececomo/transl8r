@@ -39,6 +39,11 @@ export const commandModes: OptionDefinition[] = [
     type: Boolean,
   },
   {
+    name: 'todo',
+    description: 'Generate a handful of files ready to be translated.',
+    type: Boolean,
+  },
+  {
     name: 'help',
     description: 'See this helpful message.',
     type: Boolean,
@@ -77,7 +82,7 @@ export const commandOptions: OptionDefinition[] = [
     description:
       'A filepath expression to look for translation files.\n' +
       '(e.g. "./resources/locales/\\{\\{lang\\}\\}/\\{\\{namespace\\}\\}.json")\n' +
-      'Hint: use `\\{\\{lang\\}\\}` and `\\{\\{namespace\\}\\}` for path placeholders.',
+      'Hint: use `\\{\\{lang\\}\\}` and `\\{\\{namespace\\}\\}` as placeholders.',
     type: String,
   },
   {
@@ -86,5 +91,19 @@ export const commandOptions: OptionDefinition[] = [
     description: 'Config file path (default: ".transl8r.yml")',
     type: String,
     defaultValue: '.transl8r.yml',
+  },
+  {
+    name: 'outputDir',
+    alias: 'o',
+    description:
+      'Directory for output artefacts, for commands that support them.\n' +
+      'Hint: use `\\{\\{group\\}\\}` and `\\{\\{date\\}\\}` as placeholders.',
+    type: String,
+  },
+  {
+    name: 'group',
+    alias: 'g',
+    description: 'Identifying group for commands that rely on it.',
+    type: String,
   },
 ];
