@@ -7,25 +7,27 @@ import { zip } from '../helpers/zip';
 import { removeDir } from '../helpers/removeDir';
 import { sleep } from '../helpers/sleep';
 
-export const todo = async (options: Options): Promise<void> => {
+export const exportTodo = async (options: Options): Promise<void> => {
   const baseJson = loadJsonFiles(options.path, options.baseLang, options.availableNamespaces);
   const namespaces = getNonGeneratedNamespaces(options);
-  const outputDir = options.outputDir;
-  const outputZip = `${options.outputDir}.zip`;
+  const outputDir = options.export.outputDir;
+  const outputZip = `${outputDir}.zip`;
 
   let filesAdded = 0;
   let filesUnresolved = 0;
 
   options.langs.forEach(async lang => {
-    filesUnresolved += 1;
     const langJson = loadJsonFiles(options.path, lang, namespaces);
-    const langGeneratedJson = loadJsonFiles(options.path, lang, [options.namespace]);
     const missingJson = getMissing(baseJson, langJson);
     const missingCount = Object.keys(missingJson).length;
 
-    if (missingCount === 0) {
-      return;
-    }
+    if (missingCount === 0) return;
+
+    filesUnresolved += 1;
+
+    const langGeneratedJson = options.export.omitGenerated
+      ? {}
+      : loadJsonFiles(options.path, lang, [options.namespace]);
 
     const fileName = `${options.group}.${lang}.csv`;
     const filePath = `${outputDir}/${fileName}`;

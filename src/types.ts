@@ -9,7 +9,7 @@ export interface CommandModes {
   sort: boolean;
   help: boolean;
   lint: boolean;
-  todo: boolean;
+  exportTodo: boolean;
 }
 
 export interface Options {
@@ -22,7 +22,10 @@ export interface Options {
   validation: {
     mismatchedPlaceholders: string[];
   };
-  outputDir: string;
+  export: {
+    outputDir: string;
+    omitGenerated: boolean;
+  };
 }
 
 export interface CommandOptions {
@@ -34,6 +37,7 @@ export interface CommandOptions {
   configFile: string;
   outputDir?: string;
   group?: string;
+  omitGenerated?: boolean;
 }
 
 export interface YamlOptions {
@@ -50,5 +54,8 @@ export interface YamlOptions {
   validation?: {
     mismatchedPlaceholders?: string[];
   };
-  outputDir?: string;
+  export?: {
+    outputDir?: string;
+    omitGenerated?: boolean;
+  };
 }

@@ -34,9 +34,12 @@ export const resolveCommandOptions = (cmd: CommandOptions): Options => {
     validation: {
       mismatchedPlaceholders: yml.validation?.mismatchedPlaceholders ?? [],
     },
-    outputDir: (cmd.outputDir ?? yml.outputDir ?? config.outputDir)
-      .replace(/{{group}}/, group)
-      .replace(/{{date}}/, dateFormat(Date(), 'yyyy-mm-dd')),
+    export: {
+      omitGenerated: cmd.omitGenerated ?? yml.export?.omitGenerated ?? config.export.omitGenerated,
+      outputDir: (cmd.outputDir ?? yml.export?.outputDir ?? config.export.outputDir)
+        .replace(/{{group}}/, group)
+        .replace(/{{date}}/, dateFormat(Date(), 'yyyy-mm-dd')),
+    },
   };
 };
 

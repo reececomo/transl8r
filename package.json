@@ -1,6 +1,6 @@
 {
   "name": "transl8r",
-  "version": "0.10.0",
+  "version": "0.10.1",
   "description": "Manage JSON translation files.",
   "main": "./dist/index.js",
   "bin": {

@@ -13,7 +13,7 @@ const dateformat_1 = tslib_1.__importDefault(require("dateformat"));
  * Accepts command line options and YAML options, and then returns result.
  */
 const resolveCommandOptions = (cmd) => {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z;
     const yml = getYamlOptions(cmd.configFile);
     const namespace = (_c = (_a = cmd.namespace) !== null && _a !== void 0 ? _a : (_b = yml.namespaces) === null || _b === void 0 ? void 0 : _b.target) !== null && _c !== void 0 ? _c : config_1.config.namespaces.target;
     const availableNamespaces = (_f = (_d = cmd.availableNamespaces) !== null && _d !== void 0 ? _d : (_e = yml.namespaces) === null || _e === void 0 ? void 0 : _e.other) !== null && _f !== void 0 ? _f : config_1.config.namespaces.other;
@@ -31,9 +31,12 @@ const resolveCommandOptions = (cmd) => {
         validation: {
             mismatchedPlaceholders: (_t = (_s = yml.validation) === null || _s === void 0 ? void 0 : _s.mismatchedPlaceholders) !== null && _t !== void 0 ? _t : [],
         },
-        outputDir: ((_v = (_u = cmd.outputDir) !== null && _u !== void 0 ? _u : yml.outputDir) !== null && _v !== void 0 ? _v : config_1.config.outputDir)
-            .replace(/{{group}}/, group)
-            .replace(/{{date}}/, dateformat_1.default(Date(), 'yyyy-mm-dd')),
+        export: {
+            omitGenerated: (_w = (_u = cmd.omitGenerated) !== null && _u !== void 0 ? _u : (_v = yml.export) === null || _v === void 0 ? void 0 : _v.omitGenerated) !== null && _w !== void 0 ? _w : config_1.config.export.omitGenerated,
+            outputDir: ((_z = (_x = cmd.outputDir) !== null && _x !== void 0 ? _x : (_y = yml.export) === null || _y === void 0 ? void 0 : _y.outputDir) !== null && _z !== void 0 ? _z : config_1.config.export.outputDir)
+                .replace(/{{group}}/, group)
+                .replace(/{{date}}/, dateformat_1.default(Date(), 'yyyy-mm-dd')),
+        },
     };
 };
 exports.resolveCommandOptions = resolveCommandOptions;

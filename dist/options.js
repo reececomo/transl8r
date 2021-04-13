@@ -40,8 +40,8 @@ exports.commandModes = [
         type: Boolean,
     },
     {
-        name: 'todo',
-        description: 'Generate a handful of files ready to be translated.',
+        name: 'exportTodo',
+        description: 'Generate a ZIP containing strings ready for translation.',
         type: Boolean,
     },
     {
@@ -51,6 +51,13 @@ exports.commandModes = [
     },
 ];
 exports.commandOptions = [
+    {
+        name: 'configFile',
+        alias: 'c',
+        description: 'Config file path (default: ".transl8r.yml")',
+        type: String,
+        defaultValue: '.transl8r.yml',
+    },
     {
         name: 'baseLang',
         alias: 'b',
@@ -85,13 +92,6 @@ exports.commandOptions = [
         type: String,
     },
     {
-        name: 'configFile',
-        alias: 'c',
-        description: 'Config file path (default: ".transl8r.yml")',
-        type: String,
-        defaultValue: '.transl8r.yml',
-    },
-    {
         name: 'outputDir',
         alias: 'o',
         description: 'Directory for output artefacts, for commands that support them.\n' +
@@ -103,6 +103,11 @@ exports.commandOptions = [
         alias: 'g',
         description: 'Identifying group for commands that rely on it.',
         type: String,
+    },
+    {
+        name: 'omitGenerated',
+        description: 'When exporting strings, do not include generated values.',
+        type: Boolean,
     },
 ];
 //# sourceMappingURL=options.js.map

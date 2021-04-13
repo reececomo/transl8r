@@ -10,7 +10,7 @@ import { help } from './commands/help';
 import { lint } from './commands/lint';
 import { remove } from './commands/remove';
 import { sort } from './commands/sort';
-import { todo } from './commands/todo';
+import { exportTodo } from './commands/exportTodo';
 import { resolveCommandOptions } from './helpers/resolveOptions';
 import { commandModes, commandOptions } from './options';
 import { CommandModes, CommandOptions } from './types';
@@ -34,8 +34,8 @@ if (mode.add) {
   sort(options);
 } else if (mode.lint) {
   lint(options);
-} else if (mode.todo) {
-  todo(options);
+} else if (mode.exportTodo) {
+  exportTodo(options);
 } else {
   help();
 }

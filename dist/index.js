@@ -12,7 +12,7 @@ const help_1 = require("./commands/help");
 const lint_1 = require("./commands/lint");
 const remove_1 = require("./commands/remove");
 const sort_1 = require("./commands/sort");
-const todo_1 = require("./commands/todo");
+const exportTodo_1 = require("./commands/exportTodo");
 const resolveOptions_1 = require("./helpers/resolveOptions");
 const options_1 = require("./options");
 const args = command_line_args_1.default([...options_1.commandModes, ...options_1.commandOptions]);
@@ -40,8 +40,8 @@ else if (mode.sort) {
 else if (mode.lint) {
     lint_1.lint(options);
 }
-else if (mode.todo) {
-    todo_1.todo(options);
+else if (mode.exportTodo) {
+    exportTodo_1.exportTodo(options);
 }
 else {
     help_1.help();

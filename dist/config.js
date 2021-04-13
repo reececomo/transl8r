@@ -17,6 +17,9 @@ exports.config = {
         other: ['base'],
     },
     path: './{{lang}}/{{namespace}}.json',
-    outputDir: '{{group}}-todo-{{date}}',
+    export: {
+        omitGenerated: false,
+        outputDir: '{{group}}-todo-{{date}}',
+    },
 };
 //# sourceMappingURL=config.js.map

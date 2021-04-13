@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.todo = void 0;
+exports.exportTodo = void 0;
 const tslib_1 = require("tslib");
 const csv_writer_1 = require("csv-writer");
 const file_1 = require("../helpers/file");
@@ -9,22 +9,23 @@ const fs_1 = tslib_1.__importDefault(require("fs"));
 const zip_1 = require("../helpers/zip");
 const removeDir_1 = require("../helpers/removeDir");
 const sleep_1 = require("../helpers/sleep");
-const todo = (options) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+const exportTodo = (options) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     const baseJson = file_1.loadJsonFiles(options.path, options.baseLang, options.availableNamespaces);
     const namespaces = getNonGeneratedNamespaces(options);
-    const outputDir = options.outputDir;
-    const outputZip = `${options.outputDir}.zip`;
+    const outputDir = options.export.outputDir;
+    const outputZip = `${outputDir}.zip`;
     let filesAdded = 0;
     let filesUnresolved = 0;
     options.langs.forEach((lang) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-        filesUnresolved += 1;
         const langJson = file_1.loadJsonFiles(options.path, lang, namespaces);
-        const langGeneratedJson = file_1.loadJsonFiles(options.path, lang, [options.namespace]);
         const missingJson = getMissing(baseJson, langJson);
         const missingCount = Object.keys(missingJson).length;
-        if (missingCount === 0) {
+        if (missingCount === 0)
             return;
-        }
+        filesUnresolved += 1;
+        const langGeneratedJson = options.export.omitGenerated
+            ? {}
+            : file_1.loadJsonFiles(options.path, lang, [options.namespace]);
         const fileName = `${options.group}.${lang}.csv`;
         const filePath = `${outputDir}/${fileName}`;
         const csvHeader = {
@@ -68,7 +69,7 @@ const todo = (options) => tslib_1.__awaiter(void 0, void 0, void 0, function* ()
         });
     }
 });
-exports.todo = todo;
+exports.exportTodo = exportTodo;
 // Assumes "target" namespace is the generated namespace.
 const getNonGeneratedNamespaces = (options) => {
     const nonGeneratedNamespaces = options.availableNamespaces;
@@ -90,4 +91,4 @@ const getMissing = (jsonA, jsonB) => {
     });
     return missing;
 };
-//# sourceMappingURL=todo.js.map
+//# sourceMappingURL=exportTodo.js.map
