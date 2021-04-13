@@ -10,7 +10,7 @@ A simple utility for managing JSON language files in projects.
 - [x] Sort translation files.
 - [x] Validate translation files.
 - [x] Export TODO language translations as CSV.
-- [ ] Import language CSV files.
+- [x] Import CSV language files.
 
 ## Install
 
@@ -46,7 +46,40 @@ yarn transl8r --help
 
 ## Usage
 
-### `--add` (or `-a`) Add single key
+### Housekeeping
+
+#### `--lint` Lint translation files
+
+Lets you know if there's any issues that may affect the translation files.
+
+```bash
+Failed to validate, there were 2 errors:
+fr: "error.validation.required" has mismatched markup tags:
+ - <0>,</0> vs <none>
+fr: "error.validation.required" has mismatched placeholders:
+ - {{label}} vs <none>
+```
+
+> You may use the YAML file to silence warnings for mismatched placeholders.
+
+#### `--clean` Clean unreachable translations
+
+Remove dead keys from generated files where they exist in the professional translation file.
+
+```bash
+yarn transl8r --clean
+  fr:     Up to date ✓
+  de:     Purged 14 unreachable key(s).
+  ✨  Done in 0.53s.
+```
+
+#### `--sort` Sort translation files
+
+Sort all the language files by key.
+
+### Managing translations
+
+#### `--add` (or `-a`) Add single key
 
 Adds a new generated key to all language files, including the base language.
 
@@ -62,7 +95,7 @@ yarn transl8r -a button.dismiss.label
 ✨  Done in 3.87s.
 ```
 
-### `--alt` Lost in translation?
+#### `--alt` Lost in translation?
 
 Use alternative copy for the translations, without affecting the base (English) translation.
 
@@ -85,7 +118,7 @@ zh-tw:  關閉提示
 ✨  Done in 1.46s.
 ```
 
-### `--remove` Remove a single key
+#### `--remove` Remove a single key
 
 When you've added a key you no longer want:
 
@@ -93,32 +126,7 @@ When you've added a key you no longer want:
 yarn transl8r --remove button.legacy.close
 ```
 
-### `--lint` Lint translation files
-
-Lets you know if there's any issues that may affect the translation files.
-
-```bash
-Failed to validate, there were 2 errors:
-fr: "error.validation.required" has mismatched markup tags:
- - <0>,</0> vs <none>
-fr: "error.validation.required" has mismatched placeholders:
- - {{label}} vs <none>
-```
-
-> You may use the YAML file to silence warnings for mismatched placeholders.
-
-### `--clean` Clean unreachable translations
-
-Remove dead keys from generated files where they exist in the professional translation file.
-
-```bash
-yarn transl8r --clean
-  fr:     Up to date ✓
-  de:     Purged 14 unreachable key(s).
-  ✨  Done in 0.53s.
-```
-
-### `--backfill` Backfill missing translations
+#### `--backfill` Backfill missing translations
 
 **Note:** This command currently does not reverse translations for sanity checking.
 
@@ -128,6 +136,50 @@ yarn transl8r --backfill
 # ...or specific languages only
 yarn transl8r --backfill -l fr de
 ```
+
+
+### CSV import/export
+
+#### `--exportTodo` Export strings that need translating
+
+Exports a .ZIP archive containing CSV files ready to translate.
+
+```
+my-app-todo-2022-07-23.zip/
+  my-app.es.csv
+  my-app.fr.csv
+  my-app.zh-cn.csv
+```
+
+##### Format example
+
+| contextKey    | en            | fr    |
+| ------------- | ------------- | ----- |
+| btn.continue  | Continue      |       |
+| btn.cancel    | Cancel        |       |
+| btn.dismiss   | Dismiss       |       |
+
+#### `--importCsv` Import strings that need translating
+
+Exports a .ZIP archive containing CSV files ready to translate.
+
+#### Accepts these formats:
+
+##### Translated base format
+
+| contextKey    | en            | fr        |
+| ------------- | ------------- | --------- |
+| btn.continue  | Continue      | Continuez |
+| btn.cancel    | Cancel        | Annuler   |
+| btn.dismiss   | Dismiss       | Rejeter   |
+
+##### Translations only format
+
+| contextKey    | fr        |
+| ------------- | --------- |
+| btn.continue  | Continuez |
+| btn.cancel    | Annuler   |
+| btn.dismiss   | Rejeter   |
 
 ### Options
 

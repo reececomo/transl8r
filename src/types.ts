@@ -10,6 +10,7 @@ export interface CommandModes {
   help: boolean;
   lint: boolean;
   exportTodo: boolean;
+  importCsv: string;
 }
 
 export interface Options {

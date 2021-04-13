@@ -6,6 +6,7 @@ const sort = (options) => {
     options.langs.forEach(lang => {
         options.availableNamespaces.forEach(ns => file_1.sortJsonFile(options.path, lang, ns));
     });
+    options.availableNamespaces.forEach(ns => file_1.sortJsonFile(options.path, options.baseLang, ns));
 };
 exports.sort = sort;
 //# sourceMappingURL=sort.js.map

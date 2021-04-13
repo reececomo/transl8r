@@ -11,6 +11,7 @@ import { lint } from './commands/lint';
 import { remove } from './commands/remove';
 import { sort } from './commands/sort';
 import { exportTodo } from './commands/exportTodo';
+import { importCsv } from './commands/importCsv';
 import { resolveCommandOptions } from './helpers/resolveOptions';
 import { commandModes, commandOptions } from './options';
 import { CommandModes, CommandOptions } from './types';
@@ -36,6 +37,8 @@ if (mode.add) {
   lint(options);
 } else if (mode.exportTodo) {
   exportTodo(options);
+} else if (mode.importCsv) {
+  importCsv(mode.importCsv, options);
 } else {
   help();
 }

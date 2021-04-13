@@ -40,8 +40,17 @@ export const commandModes: OptionDefinition[] = [
   },
   {
     name: 'exportTodo',
-    description: 'Generate a ZIP containing strings ready for translation.',
+    description: 'Generate a ZIP containing CSVs of strings ready to translate.',
     type: Boolean,
+  },
+  {
+    name: 'importCsv',
+    description:
+      'Import a CSV file of strings into the language files. MUST contain headers.\n' +
+      'Must be in one of these supported formats:\n' +
+      '- "contextKey,\\{\\{lang\\}\\}" - e.g. "contextKey,fr" imports French.\n' +
+      '- "contextKey,\\{\\{from\\}\\},\\{\\{to\\}\\}" - e.g. "contextKey,en,it" imports Italian.',
+    type: String,
   },
   {
     name: 'help',

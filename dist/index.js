@@ -13,6 +13,7 @@ const lint_1 = require("./commands/lint");
 const remove_1 = require("./commands/remove");
 const sort_1 = require("./commands/sort");
 const exportTodo_1 = require("./commands/exportTodo");
+const importCsv_1 = require("./commands/importCsv");
 const resolveOptions_1 = require("./helpers/resolveOptions");
 const options_1 = require("./options");
 const args = command_line_args_1.default([...options_1.commandModes, ...options_1.commandOptions]);
@@ -42,6 +43,9 @@ else if (mode.lint) {
 }
 else if (mode.exportTodo) {
     exportTodo_1.exportTodo(options);
+}
+else if (mode.importCsv) {
+    importCsv_1.importCsv(mode.importCsv, options);
 }
 else {
     help_1.help();

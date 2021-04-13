@@ -4,7 +4,7 @@ import sortJson from 'sort-json';
 import { LangJson } from '../types';
 import { logMessage } from './logger';
 
-const getFilePath = (path: string, langCode: string, namespace: string) =>
+export const getFilePath = (path: string, langCode: string, namespace: string): string =>
   path.replace(/{{lang}}/gi, langCode).replace(/{{namespace}}/, namespace);
 
 export const loadJsonFile = (path: string, langCode: string, namespace: string): LangJson => {

@@ -16,7 +16,7 @@ exports.config = {
         target: 'base.generated',
         other: ['base'],
     },
-    path: './{{lang}}/{{namespace}}.json',
+    path: 'lang/{{lang}}/{{namespace}}.json',
     export: {
         omitGenerated: false,
         outputDir: '{{group}}-todo-{{date}}',
